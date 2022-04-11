@@ -258,11 +258,13 @@ function sleep(milliseconds) {
         currentDate = Date.now();
     } while (currentDate - date < milliseconds);
 }
-for (let i = 0; i < fen.length; i++) {
-    setTimeout(function () {
-        board = setBoardByFEN(fen[i]);
-        initPieces(board);
-        setImagesOnBoard();
-        sleep(1000);
-    }, 1000);    
+window.onload = () => {
+    for (let i = 0; i < fen.length; i++) {
+        setTimeout(function () {
+            board = setBoardByFEN(fen[i]);
+            initPieces(board);
+            setImagesOnBoard();
+            sleep(1000);
+        }, 1000);
+    }
 }
