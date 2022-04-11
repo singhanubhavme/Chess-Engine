@@ -1,7 +1,9 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.ArrayList;
-
+import java.io.*;
 class EngineVsEngine {
-    public static void main(String args[]) {
+    public static void main(String args[]) throws IOException {
         Stockfish stockfish = new Stockfish();
         Board b1 = new Board();
         int moves = 0;
@@ -23,8 +25,12 @@ class EngineVsEngine {
             }
         }
         // show board from FEN ArrayList
+        BufferedWriter bw = new BufferedWriter(new FileWriter("moves.txt"));
         for (int i = 0; i < FENs.size(); i++) {
-            System.out.println(FENs.get(i));
+            // System.out.println(FENs.get(i));
+            bw.write(FENs.get(i)+"\n");
         }
+        bw.close();
+        
     }
 }
