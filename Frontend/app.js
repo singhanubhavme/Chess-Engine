@@ -258,7 +258,7 @@ function sleep(milliseconds) {
         currentDate = Date.now();
     } while (currentDate - date < milliseconds);
 }
-window.onload = () => {
+document.addEventListener('DOMContentLoaded', () => {
     for (let i = 0; i < fen.length; i++) {
         setTimeout(function () {
             board = setBoardByFEN(fen[i]);
@@ -267,4 +267,4 @@ window.onload = () => {
             sleep(1000);
         }, 1000);
     }
-}
+}, false);
