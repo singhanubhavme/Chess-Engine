@@ -50,8 +50,7 @@ class Stockfish {
 	public String getBestMove(String fen, int waitTime) {
 		sendCommand("position fen " + fen);
 		sendCommand("go movetime " + waitTime);
-		getOutput(waitTime);
-		return getOutput(waitTime + 20).split("bestmove ")[1].split(" ")[0];
+		return (getOutput(waitTime + 20).split("depth 14 ")[1].split(" pv ")[1].split(" ")[0]) ;
 	}
 
 	public void stopEngine() {

@@ -15,7 +15,7 @@ class Board {
                 { "P", "P", "P", "P", "P", "P", "P", "P" },
                 { "R", "N", "B", "Q", "K", "B", "N", "R" }
         };
-        this.whoseMove = "w";
+        this.whoseMove = "b";
     }
 
     public void setBoard() {
@@ -31,8 +31,39 @@ class Board {
         };
     }
 
-    public String getFen() {
-        String fen = "";
+    public String getFEN(String[][] board) {
+        String FEN = "";
+        int numberOfEmpty = 0;
+        try {
+            for (int i = 0; i < board.length; i++) {
+                for (int j = 0; j < board[i].length; j++) {
+                    if (board[i][j].equals("e")) {
+                        numberOfEmpty++;
+                    } else {
+                        if (numberOfEmpty != 0) {
+                            FEN += Integer.toString(numberOfEmpty);
+                        }
+                        numberOfEmpty = 0;
+                        FEN += board[i][j];
+                    }
+                }
+                if (numberOfEmpty != 0) {
+                    FEN += Integer.toString(numberOfEmpty);
+                }
+                numberOfEmpty = 0;
+                if (i != board.length - 1)
+                    FEN += "/";
+            }
+            whoseMove = whoseMove.equals("w") ? "b" : "w";
+            FEN += " " + whoseMove;
+        } catch (Exception e) {
+            System.out.println("Invalid Board Position");
+        }
+        return FEN;
+    }
+
+    public String getFEN() {
+        String FEN = "";
         int numberOfEmpty = 0;
         try {
             for (int i = 0; i < this.board.length; i++) {
@@ -41,38 +72,39 @@ class Board {
                         numberOfEmpty++;
                     } else {
                         if (numberOfEmpty != 0) {
-                            fen += Integer.toString(numberOfEmpty);
+                            FEN += Integer.toString(numberOfEmpty);
                         }
                         numberOfEmpty = 0;
-                        fen += board[i][j];
+                        FEN += board[i][j];
                     }
                 }
                 if (numberOfEmpty != 0) {
-                    fen += Integer.toString(numberOfEmpty);
+                    FEN += Integer.toString(numberOfEmpty);
                 }
                 numberOfEmpty = 0;
                 if (i != this.board.length - 1)
-                    fen += "/";
+                    FEN += "/";
             }
-            fen += " " + whoseMove;
+            FEN += " " + whoseMove;
         } catch (Exception e) {
             System.out.println("Invalid Board Position");
         }
-        return fen;
+        return FEN;
     }
 
-    public String[][] setBoardByFen(String fen) {
+    public String[][] setBoardByFEN(String FEN) {
+        // System.out.println("here");
         try {
-            fen = fen.substring(0, fen.indexOf(" ")); // to remove (w and b from fen)
+            FEN = FEN.substring(0, FEN.indexOf(" ")); // to remove (w and b from FEN)
             String board[][] = new String[8][8];
-            StringTokenizer fenTokens = new StringTokenizer(fen, "/");
+            StringTokenizer FENTokens = new StringTokenizer(FEN, "/");
             int x = 0, y = 0;
-            while (fenTokens.hasMoreTokens()) {
-                String temp = fenTokens.nextToken();
+            while (FENTokens.hasMoreTokens()) {
+                String temp = FENTokens.nextToken();
                 for (int j = 0; j < temp.length(); j++) {
                     if (Character.isDigit(temp.charAt(j))) {
                         int numberOfEmpty = Integer.parseInt(String.valueOf(temp.charAt(j)));
-                        while (numberOfEmpty != 0) { // set e for every number in fen
+                        while (numberOfEmpty != 0) { // set e for every number in FEN
                             board[x][y++] = "e";
                             numberOfEmpty--;
                         }
@@ -83,36 +115,37 @@ class Board {
                 y = 0; // y will be 0 for every row
                 x++; // next row
             }
+            return board;
         } catch (Exception e) {
             System.out.println("Invalid FEN");
+            return board;
         }
-        return board;
     }
 
-    public String[][] setBoardByMove(String fen, String move) {
+    public String[][] setBoardByMove(String FEN, String move) {
         return new String[][] {};
     }
 }
 
 class Main {
     public static void main(String args[]) {
-        Board b1 = new Board();
-        b1.setBoard();
-        System.out.println();
-        System.out.println(b1.getFen());
+        // Board b1 = new Board();
+        // b1.setBoard();
+        // System.out.println();
+        // System.out.println(b1.getFEN());
 
-        String board[][] = b1.setBoardByFen(b1.getFen());
-        System.out.println();
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                System.out.print(board[i][j] + " ");
-            }
-            System.out.println();
-        }
-        Stockfish stockfish = new Stockfish();
-        stockfish.startEngine();
-        String bestMove = stockfish.getBestMove(b1.getFen(), 100);
-        System.out.println(bestMove);
-        stockfish.stopEngine();
+        // String board[][] = b1.setBoardByFEN(b1.getFEN());
+        // System.out.println();
+        // for (int i = 0; i < board.length; i++) {
+        //     for (int j = 0; j < board[i].length; j++) {
+        //         System.out.print(board[i][j] + " ");
+        //     }
+        //     System.out.println();
+        // }
+        // Stockfish stockfish = new Stockfish();
+        // stockfish.startEngine();
+        // String bestMove = stockfish.getBestMove(b1.getFEN(), 100);
+        // System.out.println(bestMove);
+        // stockfish.stopEngine();
     }
 }
