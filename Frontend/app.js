@@ -146,9 +146,7 @@ function initPieces(board) {
     }
 }
 
-initPieces(board);
 
-setImagesOnBoard();
 
 let fen = [["rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b"],
 ["rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBNR w"],
@@ -259,6 +257,8 @@ function sleep(milliseconds) {
     } while (currentDate - date < milliseconds);
 }
 document.addEventListener('DOMContentLoaded', () => {
+    initPieces(board);
+    setImagesOnBoard();
     for (let i = 0; i < fen.length; i++) {
         setTimeout(function () {
             board = setBoardByFEN(fen[i]);
